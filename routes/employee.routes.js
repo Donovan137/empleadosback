@@ -5,15 +5,15 @@ const Employee = require('../models/employee.model');
 // Agregar nuevo empleado
 router.post('/', async (req, res) => {
   try {
-    console.log('Datos recibidos:', req.body); // Agrega este log para depuración
+    console.log('Datos recibidos:', req.body); // Depuración detallada
     
     const { username, position, workplace, value } = req.body;
     
     const newEmployee = new Employee({
-      nombre_usuario: username,
-      puesto: position,
-      lugar_trabajo: workplace,
-      valor: value
+      nombre_usuario: username || req.body.nombre_usuario,
+      puesto: position || req.body.puesto,
+      lugar_trabajo: workplace || req.body.lugar_trabajo,
+      valor: Number(value || req.body.valor)
     });
 
     const savedEmployee = await newEmployee.save();
@@ -23,7 +23,7 @@ router.post('/', async (req, res) => {
     console.error('Error al agregar el empleado:', error);
     res.status(400).json({ 
       message: error.message,
-      error: error 
+      detalles: error.toString()
     });
   }
 });
@@ -34,7 +34,10 @@ router.get('/', async (req, res) => {
     const employees = await Employee.find();
     res.status(200).json(employees);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ 
+      message: error.message,
+      detalles: error.toString()
+    });
   }
 });
 
