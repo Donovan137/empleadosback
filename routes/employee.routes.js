@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 const Employee = require('../models/employee.model');
 
-// Agregar nuevo empleado
+
 router.post('/', async (req, res) => {
   try {
-    console.log('Datos recibidos:', req.body); // Depuración detallada
+    console.log('Datos recibidos:', req.body);
     
     const { username, position, workplace, value } = req.body;
     
@@ -28,7 +28,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Obtener todos los empleados
+
 router.get('/', async (req, res) => {
   try {
     const employees = await Employee.find();
