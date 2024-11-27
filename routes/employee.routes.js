@@ -2,9 +2,11 @@ const express = require('express');
 const router = express.Router();
 const Employee = require('../models/employee.model');
 
-// Agregar nuevo empleado //
+// Agregar nuevo empleado
 router.post('/', async (req, res) => {
   try {
+    console.log('Datos recibidos:', req.body); // Agrega este log para depuración
+    
     const { username, position, workplace, value } = req.body;
     
     const newEmployee = new Employee({
@@ -19,11 +21,14 @@ router.post('/', async (req, res) => {
     res.status(201).json(savedEmployee);
   } catch (error) {
     console.error('Error al agregar el empleado:', error);
-    res.status(400).json({ message: error.message });
+    res.status(400).json({ 
+      message: error.message,
+      error: error 
+    });
   }
 });
 
-// Obtener todos los empleados //
+// Obtener todos los empleados
 router.get('/', async (req, res) => {
   try {
     const employees = await Employee.find();
